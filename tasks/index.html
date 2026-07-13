@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#85C8FE">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="今日のタスク">
+<title>今日のタスク — R.QueenNail</title>
+<style>
+  :root{
+    --ink:#3c4d5c; --ink-soft:#7a8c9a;
+    --blue-deep:#4f9be0; --blue-mist:#eaf4fd; --slate:#55758A;
+    --line:#e4eef6; --paper:#ffffff;
+    --sans:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);color:var(--ink);background:#f7fbff;min-height:100vh;
+    padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+  .wrap{max-width:600px;margin:0 auto;padding:22px 16px 70px}
+
+  header{display:flex;align-items:baseline;justify-content:space-between;
+    padding:4px 4px 14px;border-bottom:1px solid var(--line)}
+  h1{font-size:20px;font-weight:700;letter-spacing:.06em}
+  .stamp{font-size:12px;color:var(--ink-soft)}
+
+  .addbar{display:flex;gap:8px;margin:14px 0 4px}
+  .addbar input{flex:1;font-family:var(--sans);font-size:15px;color:var(--ink);
+    padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;outline:none}
+  .addbar input:focus{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(133,200,254,.18)}
+  .addbar button{flex:0 0 auto;font-family:var(--sans);font-size:14px;font-weight:700;color:#fff;
+    background:var(--blue-deep);border:none;border-radius:10px;padding:0 18px;cursor:pointer}
+  .addbar button:active{opacity:.85}
+
+  .sec-head{display:flex;align-items:center;gap:8px;margin:22px 2px 4px;
+    font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--slate)}
+  .sec-head .count{font-weight:600;font-size:11px;color:var(--blue-deep);
+    background:var(--blue-mist);border-radius:999px;padding:1px 8px}
+
+  ul{list-style:none}
+  li.item{display:flex;align-items:flex-start;gap:12px;
+    padding:13px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+  li.item:active{background:#f0f7ff}
+  .box{flex:0 0 auto;width:22px;height:22px;margin-top:1px;border-radius:6px;
+    border:1.6px solid var(--blue-deep);background:#fff;position:relative;transition:all .15s ease}
+  .box::after{content:"";position:absolute;left:6.5px;top:2.5px;width:6px;height:11px;
+    border:solid #fff;border-width:0 2.3px 2.3px 0;transform:rotate(45deg) scale(0);transition:transform .15s ease}
+  li.done .box{background:var(--blue-deep);border-color:var(--blue-deep)}
+  li.done .box::after{transform:rotate(45deg) scale(1)}
+  .txt{flex:1;min-width:0}
+  .txt .main{font-size:15px;line-height:1.5;color:var(--ink)}
+  .txt .note{margin-top:3px;font-size:12px;line-height:1.55;color:var(--ink-soft)}
+  li.done .txt .main{text-decoration:line-through;color:#b3c1cd}
+  li.done{opacity:.6}
+  .pill{display:inline-block;margin-left:7px;padding:1px 7px;border-radius:999px;
+    font-size:10.5px;vertical-align:middle;background:var(--blue-mist);color:var(--slate)}
+  .pill.wait{background:#fdf1dc;color:#9a7b3a}
+  .pill.me{background:#e6f6ec;color:#3f8f5f}
+  .pill.mine{background:#eaf4fd;color:#4f9be0}
+  .del{flex:0 0 auto;font-size:18px;line-height:1;color:#c4d2de;padding:0 2px;margin-top:1px}
+  .del:active{color:#9a7b3a}
+
+  .foot{margin-top:26px;text-align:center;font-size:12px;line-height:1.8;color:var(--ink-soft)}
+  .empty{padding:14px 4px;font-size:13px;color:var(--ink-soft)}
+
+  #gate{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:16px;background:#f7fbff;padding:0 26px;text-align:center}
+  #gate h2{font-size:18px;font-weight:700;letter-spacing:.06em}
+  #gate p{font-size:12px;color:var(--ink-soft)}
+  #pin{font-family:var(--sans);font-size:24px;letter-spacing:.5em;text-align:center;
+    width:190px;padding:12px 10px 12px 20px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);outline:none}
+  #pin:focus{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(133,200,254,.22)}
+  #gate .err{color:#d98a8a;font-size:12px;min-height:16px}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <h2>今日のタスク</h2>
+  <p>あんしんロック（この端末は次回から自動で開きます）</p>
+  <input id="pin" type="tel" inputmode="numeric" maxlength="4" placeholder="＿＿＿＿" autocomplete="off">
+  <div class="err" id="pinErr"></div>
+</div>
+
+<div class="wrap hidden" id="app">
+  <header>
+    <h1>今日のタスク</h1>
+    <span class="stamp" id="stamp"></span>
+  </header>
+
+  <div class="addbar">
+    <input id="newtask" type="text" placeholder="＋ 新しいタスクを追加" autocomplete="off">
+    <button id="addbtn">追加</button>
+  </div>
+
+  <main id="lists"></main>
+
+  <div class="foot">完了したものは、翌日この一覧から消えます。<br>つむに言えば、私が足したり直したりもできます。</div>
+</div>
+
+<script>
+/* ===== 設定 ===== */
+const PIN = "0117";
+const UPDATED = "7/13 更新";
+
+/* ===== つむが管理するタスク（編集する場所） ===== */
+const DATA = [
+  { title:"今日やること", items:[
+    {main:"求人広告の“お手本動画”を見る", note:"見たら、その型で求人広告をつむと作る"},
+    {main:"山本さんにメール返信", note:"住み替えの件。下書きはつむが書きます"},
+  ]},
+  { title:"やりかけ・進行中", items:[
+    {main:"LINEステップ配信リニューアルを反映", note:"新文面QA済み。エルメに手順書からコピペ"},
+    {main:"ジェルネイル集客LPを仕上げる", note:"爪写真10枠＋公開先決定。深爪LP FAQ「18年」表記直しも"},
+    {main:"求人LPのボタン改善＆露出増", note:"クリック率0.8%改善。インスタ公開・Airワーク無料掲載"},
+    {main:"SY様のお客さまの声でリール動画", note:"「5回で確信に変わった」の素材。構成相談中"},
+    {main:"月次締めの続き", note:"①売上 ②支出 ③広告効果。続きから再開OK", tag:"つむと"},
+    {main:"スタンプカードのアプリ化", note:"GAS＋Googleシート。次はコード作成から"},
+    {main:"Nailbook–Googleカレンダー同期バグ修正", note:"予約が客側に反映されない件", tag:"つむと"},
+    {main:"証券口座の開設を進める", note:"さちさんの戦略メモに沿って。1社ずつ"},
+    {main:"自宅の売却→次は不動産か株か検討", note:"山本さんの査定書待ち"},
+  ]},
+  { title:"反映・返事待ち", items:[
+    {main:"Facebookページ名の変更", note:"PCから再申請済み。反映されたら教えてね", tag:"待ち"},
+  ]},
+];
+
+/* ===== 保存領域 ===== */
+const DONE_KEY = "rqn-done-v2";     // key -> 完了した日付("YYYY-MM-DD")
+const UT_KEY   = "rqn-usertasks-v1"; // 自分で追加したタスク
+function load(k,def){ try{ return JSON.parse(localStorage.getItem(k)) ?? def; }catch(e){ return def; } }
+function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+let done = load(DONE_KEY, {});
+let userTasks = load(UT_KEY, []);
+
+function todayStr(){
+  const d=new Date(), p=n=>(n<10?"0":"")+n;
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
+}
+const TODAY = todayStr();
+/* 完了記録は消さずに残す。→ 完了日が今日なら線を引いて表示、
+   完了日が昨日以前なら一覧から隠す（＝翌日に消える） */
+
+function tagClass(t){ if(!t) return ""; if(t.indexOf("待ち")>=0) return "wait"; if(t.indexOf("つむ")>=0) return "me"; return ""; }
+function esc(s){ return s.replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function itemHTML(key, main, note, tag, tagCls, isUser){
+  const isDone = done[key] === TODAY;
+  const pill = tag ? `<span class="pill ${tagCls}">${tag}</span>` : "";
+  const del  = isUser ? `<span class="del" data-del="${key}">×</span>` : "";
+  const noteH = note ? `<div class="note">${esc(note)}</div>` : "";
+  return `<li class="item ${isDone?'done':''}" data-k="${encodeURIComponent(key)}">
+    <span class="box"></span>
+    <span class="txt"><span class="main">${esc(main)}${pill}</span>${noteH}</span>${del}
+  </li>`;
+}
+
+function render(){
+  document.getElementById("stamp").textContent = UPDATED;
+  let html = "";
+
+  // 自分で追加したタスク（今日完了ぶんは残す・過去完了は cleanup 済み）
+  const mine = userTasks.filter(t => !( done["u:"+t.id] && done["u:"+t.id] !== TODAY ));
+  if(mine.length){
+    const open = mine.filter(t=>done["u:"+t.id]!==TODAY).length;
+    html += `<div class="sec-head">追加したタスク<span class="count">${open}</span></div><ul>`;
+    mine.forEach(t=> html += itemHTML("u:"+t.id, t.main, "", "自分", "mine", true));
+    html += "</ul>";
+  }
+
+  // つむ管理ぶん
+  DATA.forEach(sec=>{
+    const vis = sec.items.filter(it => !(done[it.main] && done[it.main] !== TODAY));
+    if(!vis.length) return;
+    const open = vis.filter(it=>done[it.main]!==TODAY).length;
+    html += `<div class="sec-head">${sec.title}<span class="count">${open}</span></div><ul>`;
+    vis.forEach(it=> html += itemHTML(it.main, it.main, it.note, it.tag, tagClass(it.tag), false));
+    html += "</ul>";
+  });
+
+  if(!html) html = `<div class="empty">今日のタスクは空っぽです。上の欄から追加できます。</div>`;
+  document.getElementById("lists").innerHTML = html;
+
+  document.querySelectorAll("li.item").forEach(li=>{
+    li.addEventListener("click", (e)=>{
+      if(e.target.classList.contains("del")){
+        const dk = e.target.getAttribute("data-del");
+        userTasks = userTasks.filter(t => ("u:"+t.id) !== dk);
+        delete done[dk]; save(UT_KEY,userTasks); save(DONE_KEY,done); render(); return;
+      }
+      const k = decodeURIComponent(li.dataset.k);
+      if(done[k]) delete done[k]; else done[k] = TODAY;
+      save(DONE_KEY, done); render();
+    });
+  });
+}
+
+/* 追加 */
+function addTask(){
+  const inp = document.getElementById("newtask");
+  const v = inp.value.trim();
+  if(!v) return;
+  userTasks.unshift({ id: Date.now().toString(), main: v });
+  save(UT_KEY, userTasks); inp.value=""; render(); inp.focus();
+}
+document.getElementById("addbtn").addEventListener("click", addTask);
+document.getElementById("newtask").addEventListener("keydown", e=>{ if(e.key==="Enter") addTask(); });
+
+/* ===== PIN ===== */
+const UNLOCK_KEY = "rqn-tasks-unlocked-v1";
+const gate = document.getElementById("gate"), app = document.getElementById("app");
+function unlock(){ gate.classList.add("hidden"); app.classList.remove("hidden"); render(); }
+if(localStorage.getItem(UNLOCK_KEY) === "1"){ unlock(); }
+else {
+  const pin = document.getElementById("pin"); pin.focus();
+  pin.addEventListener("input", ()=>{
+    if(pin.value.length === 4){
+      if(pin.value === PIN){ localStorage.setItem(UNLOCK_KEY,"1"); unlock(); }
+      else { document.getElementById("pinErr").textContent = "番号がちがうみたい"; pin.value=""; }
+    } else { document.getElementById("pinErr").textContent = ""; }
+  });
+}
+</script>
+</body>
+</html>
