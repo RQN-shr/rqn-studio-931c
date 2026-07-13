@@ -53,6 +53,7 @@
   .txt{flex:1;min-width:0}
   .txt .main{font-size:15px;line-height:1.5;color:var(--ink)}
   .txt .note{margin-top:3px;font-size:12px;line-height:1.55;color:var(--ink-soft)}
+  .txt .added{margin-top:4px;font-size:11px;color:#a8b6c2;letter-spacing:.04em}
   li.done .txt .main{text-decoration:line-through;color:#b3c1cd}
   li.done{opacity:.6}
   .pill{display:inline-block;margin-left:7px;padding:1px 7px;border-radius:999px;
@@ -142,20 +143,26 @@ function todayStr(){
   return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
 }
 const TODAY = todayStr();
+const SEED_DATE = "2026-07-13"; // つむ管理タスクをこの一覧に載せた日
 /* 完了記録は消さずに残す。→ 完了日が今日なら線を引いて表示、
    完了日が昨日以前なら一覧から隠す（＝翌日に消える） */
+
+function mdOf(s){ if(!s) return ""; const p=String(s).split("-"); return p.length===3 ? (Number(p[1])+"/"+Number(p[2])) : ""; }
+function dateFromId(id){ const n=Number(id); if(!n) return ""; const d=new Date(n),p=x=>(x<10?"0":"")+x; return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate()); }
 
 function tagClass(t){ if(!t) return ""; if(t.indexOf("待ち")>=0) return "wait"; if(t.indexOf("つむ")>=0) return "me"; return ""; }
 function esc(s){ return s.replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
-function itemHTML(key, main, note, tag, tagCls, isUser){
+function itemHTML(key, main, note, tag, tagCls, isUser, added){
   const isDone = done[key] === TODAY;
   const pill = tag ? `<span class="pill ${tagCls}">${tag}</span>` : "";
   const del  = isUser ? `<span class="del" data-del="${key}">×</span>` : "";
   const noteH = note ? `<div class="note">${esc(note)}</div>` : "";
+  const md = mdOf(added);
+  const addedH = md ? `<div class="added">${md} 追加</div>` : "";
   return `<li class="item ${isDone?'done':''}" data-k="${encodeURIComponent(key)}">
     <span class="box"></span>
-    <span class="txt"><span class="main">${esc(main)}${pill}</span>${noteH}</span>${del}
+    <span class="txt"><span class="main">${esc(main)}${pill}</span>${noteH}${addedH}</span>${del}
   </li>`;
 }
 
@@ -168,7 +175,7 @@ function render(){
   if(mine.length){
     const open = mine.filter(t=>done["u:"+t.id]!==TODAY).length;
     html += `<div class="sec-head">追加したタスク<span class="count">${open}</span></div><ul>`;
-    mine.forEach(t=> html += itemHTML("u:"+t.id, t.main, "", "自分", "mine", true));
+    mine.forEach(t=> html += itemHTML("u:"+t.id, t.main, "", "自分", "mine", true, t.added || dateFromId(t.id)));
     html += "</ul>";
   }
 
@@ -178,7 +185,7 @@ function render(){
     if(!vis.length) return;
     const open = vis.filter(it=>done[it.main]!==TODAY).length;
     html += `<div class="sec-head">${sec.title}<span class="count">${open}</span></div><ul>`;
-    vis.forEach(it=> html += itemHTML(it.main, it.main, it.note, it.tag, tagClass(it.tag), false));
+    vis.forEach(it=> html += itemHTML(it.main, it.main, it.note, it.tag, tagClass(it.tag), false, it.added || SEED_DATE));
     html += "</ul>";
   });
 
@@ -204,7 +211,7 @@ function addTask(){
   const inp = document.getElementById("newtask");
   const v = inp.value.trim();
   if(!v) return;
-  userTasks.unshift({ id: Date.now().toString(), main: v });
+  userTasks.unshift({ id: Date.now().toString(), main: v, added: TODAY });
   save(UT_KEY, userTasks); inp.value=""; render(); inp.focus();
 }
 document.getElementById("addbtn").addEventListener("click", addTask);
