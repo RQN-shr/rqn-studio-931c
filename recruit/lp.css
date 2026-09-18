@@ -1,0 +1,388 @@
+/* R.QueenNail recruit LP v1 */
+/* R.QueenNail 求人LP（ロハス構成版） Scripts n Styles 貼り付け用 */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;500;600&display=swap');
+
+/* ============================================================
+   R.QueenNail 求人LP（lohas-nail.com/recruit 構成準拠）
+   フォント・サイズ・行間・余白は lohas_spec.md の実測値を使用
+   ブランドカラー: #85C8FE / #55758A / #DCEFFF / #FFFFFF / #F9F9F7
+   ============================================================ */
+.rq-lp {
+  --rq-main: #85C8FE;
+  --rq-text: #55758A;
+  --rq-pale: #DCEFFF;
+  --rq-white: #FFFFFF;
+  --rq-gray: #F9F9F7;
+  --rq-line: rgba(85, 117, 138, .35);
+  --rq-serif: "Noto Serif JP", "ヒラギノ明朝 ProN", "Hiragino Mincho ProN", "Yu Mincho Light", serif;
+  --rq-sans: "Noto Sans JP", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro", sans-serif;
+  --rq-deco: "Cormorant Garamond", "Noto Serif JP", serif;
+  font-family: var(--rq-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: .05em;
+  color: var(--rq-text);
+  background: var(--rq-white);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.rq-preview { margin: 0; background: #fff; }
+.rq-lp *, .rq-lp *::before, .rq-lp *::after { box-sizing: border-box; }
+.rq-lp img { max-width: 100%; height: auto; display: block; }
+.rq-lp p { margin: 0 0 1.6em; }
+.rq-lp p:last-child { margin-bottom: 0; }
+.rq-lp figure { margin: 0; }
+.rq-lp ul, .rq-lp ol { margin: 0; padding: 0; list-style: none; }
+.rq-lp :where(h1, h2, h3, h4) { margin: 0; padding: 0; font-family: var(--rq-serif); font-weight: 400; color: var(--rq-text); }
+/* :where() で詳細度を (0,1,0) に落とし、後続の .rq-section-title 等の margin/padding が確実に勝つようにする（第6ラウンド根本修正） */
+.rq-lp strong { font-weight: 700; color: var(--rq-text); background: linear-gradient(transparent 62%, var(--rq-pale) 62%); }
+.rq-lp mark { background: transparent; color: var(--rq-main); }
+.rq-small { font-size: 13px; line-height: 1.8; color: #7b8a94; }
+
+/* ---------- レイアウト ---------- */
+.rq-section { position: relative; }
+.rq-inner { max-width: 1100px; margin: 0 auto; padding: 70px 38px; }
+.rq-inner--narrow { max-width: 900px; }
+.rq-section--gray { background: var(--rq-gray); }
+.rq-section--blue { background: var(--rq-main); }
+.rq-section--offer .rq-inner { padding-top: 40px; padding-bottom: 40px; }
+
+/* ---------- 見出し（lohas: h2 32px / .sub 26px Cormorant / .main 36px 500 / 下線36x2 / mb48） ---------- */
+.rq-lp .rq-section-title {
+  position: relative;
+  text-align: center;
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: .05em;
+  margin: 0 0 48px;
+  padding-bottom: 18px;
+}
+.rq-lp .rq-section-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 36px;
+  height: 2px;
+  margin-left: -18px;
+  background: var(--rq-main);
+}
+.rq-lp .rq-section-title .rq-sub {
+  display: block;
+  font-family: var(--rq-deco);
+  font-size: 26px;
+  line-height: 1.4;
+  letter-spacing: .06em;
+  padding-bottom: 8px;
+  color: var(--rq-text);
+}
+.rq-lp .rq-section-title .rq-main {
+  display: block;
+  font-size: 36px;
+  line-height: 1.2;
+  font-weight: 500;
+  padding-bottom: 18px;
+}
+.rq-lp .rq-section-title .rq-main em { font-style: normal; font-family: var(--rq-deco); font-size: 1.1em; line-height: 1; position: relative; top: -.06em; color: var(--rq-main); padding: 0 .1em; }
+.rq-lp .rq-section-title .rq-main + .rq-sub { padding-top: 26px; font-family: var(--rq-serif); font-size: 20px; line-height: 1.7; font-weight: 400; }
+
+/* ---------- 1 ヒーロー ---------- */
+.rq-title-band { background: var(--rq-pale); padding: 74px 20px; }
+.rq-lp .rq-under-title { text-align: center; font-size: 40px; line-height: 1.3; letter-spacing: .05em; }
+.rq-under-title .rq-sub { display: block; font-family: var(--rq-deco); font-size: 26px; line-height: 1.4; padding-bottom: 8px; }
+.rq-under-title .rq-main { display: block; font-weight: 400; }
+.rq-hero__inner { padding-top: 80px; }
+.rq-lp .rq-hero__catch { margin-bottom: 40px; }
+.rq-hero__catch .rq-main { font-size: 34px; line-height: 1.55; letter-spacing: .04em; }
+.rq-lp .rq-hero__figure { max-width: 900px; margin: 0 auto 40px; aspect-ratio: 900 / 525; overflow: hidden; }
+.rq-hero__figure img, .rq-photo img, .rq-feature__media img, .rq-reason__media img, .rq-flow-photo img { width: 100%; height: 100% !important; object-fit: cover; }
+/* ↑ img には保険で style="height:auto" をインライン付与しているため、枠に合わせる height は !important で上書き */
+.rq-lead { max-width: 900px; margin: 0 auto; }
+.rq-lead p { font-size: 18px; line-height: 1.6; letter-spacing: .05em; margin-bottom: 1.6em; }
+.rq-lead--left { text-align: left; }
+.rq-lead p:last-child { margin-bottom: 0; }
+
+/* ---------- CTA ---------- */
+.rq-cta-wrap { text-align: center; margin-top: 40px; }
+.rq-cta {
+  display: inline-block;
+  min-width: 277px;
+  padding: 24px 44px;
+  border-radius: 999px;
+  background: var(--rq-main);
+  color: #fff !important;
+  font-family: var(--rq-sans);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: .05em;
+  text-decoration: none !important;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(85, 117, 138, .25);
+  transition: transform .2s, box-shadow .2s;
+}
+.rq-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(85, 117, 138, .3); }
+.rq-lp .rq-cta-note {
+  display: block;
+  width: fit-content;
+  margin: 14px auto 0;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--rq-text);
+  box-shadow: 0 4px 14px rgba(85, 117, 138, .10);
+}
+.rq-section--cta { background: var(--rq-white); }
+.rq-lp .rq-cta-heading { text-align: center; font-size: 16px; letter-spacing: .05em; margin-bottom: 12px; }
+.rq-cta-lead { text-align: center; font-size: 16px; }
+
+/* ---------- 2 悩み（lohas: 白箱 border1px padding64 / li 18px pl27 mb9 / セクションbg gray pad 74 0） ---------- */
+#rq-worries .rq-inner { padding: 74px 38px; }
+.rq-box { background: #fff; border: 1px solid var(--rq-text); padding: 64px; }
+.rq-lp .rq-box-title { text-align: center; font-size: 28px; line-height: 1.3; letter-spacing: .03em; font-weight: 500; margin: 0 0 31px; }
+.rq-box-title span { position: relative; display: inline-block; padding: 0 42px; }
+.rq-box-title span::before, .rq-box-title span::after {
+  content: ""; position: absolute; top: 50%; width: 1px; height: 40px; background: var(--rq-text); margin-top: -20px;
+}
+.rq-box-title span::before { left: 10px; transform: rotate(-30deg); }
+.rq-box-title span::after { right: 10px; transform: rotate(30deg); }
+.rq-check-list { max-width: 710px; margin: 0 auto; }
+.rq-check-list li { position: relative; padding-left: 27px; margin-bottom: 9px; font-size: 18px; line-height: 1.6; letter-spacing: .05em; }
+.rq-check-list li:last-child { margin-bottom: 0; }
+.rq-ico-check { position: absolute; left: 0; top: .35em; width: 20px; height: 20px; }
+.rq-lp .rq-offer-text { font-size: 16px; line-height: 1.6; letter-spacing: .05em; margin-bottom: 1.6em; }
+.rq-offer-text:first-child { font-size: 18px; text-align: center; }
+
+/* ---------- 3 特徴（lohas: 2カラム 479px+479px / 画像479x328 / h3 26px 500 pb16 mb30 border-bottom / 番号 Cormorant 大） ---------- */
+.rq-features { max-width: 1024px; margin: 0 auto; }
+.rq-feature { display: flex; align-items: center; gap: 66px; margin-bottom: 80px; }
+.rq-feature:last-child { margin-bottom: 0; }
+.rq-feature--img-left { flex-direction: row-reverse; }
+.rq-feature__text, .rq-feature__media { flex: 0 0 calc(50% - 33px); max-width: 479px; }
+.rq-lp .rq-feature__text h3 {
+  font-size: 26px;
+  line-height: 1.54;
+  letter-spacing: .05em;
+  font-weight: 500;
+  padding-bottom: 16px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--rq-text);
+}
+.rq-feature__text p { font-size: 16px; line-height: 1.6; margin-bottom: 1.2em; }
+.rq-feature__media { position: relative; padding: 14px 0 0 14px; }
+.rq-feature__media::before { content: ""; position: absolute; left: 0; top: 0; width: 72%; height: 72%; background: var(--rq-main); }
+.rq-feature--img-left .rq-feature__media { padding: 14px 14px 0 0; }
+.rq-feature--img-left .rq-feature__media::before { left: auto; right: 0; }
+.rq-feature__media figure { position: relative; aspect-ratio: 479 / 328; overflow: hidden; background: #fff; box-shadow: 0 6px 18px rgba(85, 117, 138, .12); }
+.rq-feature__num {
+  position: absolute;
+  top: -42px;
+  right: -6px;
+  z-index: 2;
+  font-family: var(--rq-deco);
+  font-style: italic;
+  font-size: 72px;
+  line-height: 1;
+  letter-spacing: .02em;
+  color: var(--rq-main);
+  text-shadow: 0 0 2px #fff, 0 0 2px #fff;
+}
+.rq-feature--img-left .rq-feature__num { right: -6px; }
+
+/* ---------- 4 お客様の声 ---------- */
+.rq-voices { max-width: 900px; margin: 40px auto; display: flex; flex-direction: column; gap: 24px; }
+.rq-voice { margin: 0; padding: 20px 24px 20px 28px; border-left: 3px solid var(--rq-main); background: #fff; border-radius: 0 10px 10px 0; }
+.rq-voice p { font-size: 15px; line-height: 1.8; color: var(--rq-text); font-style: italic; margin: 0 0 8px; }
+.rq-voice footer { font-size: 13px; color: #7b8a94; text-align: right; }
+
+/* ---------- 5 理由（lohas: 帯bg / 白カード pad 56 28 28 mb24 / ラベル 20px Cormorant / 本文624 + 画像312x210） ---------- */
+.rq-reasons { max-width: 1024px; margin: 0 auto; position: relative; }
+.rq-reasons::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(255, 255, 255, .55); }
+.rq-reason { position: relative; z-index: 1; display: flex; align-items: center; gap: 32px; background: #fff; padding: 56px 28px 28px; margin-bottom: 24px; }
+.rq-reason:last-child { margin-bottom: 0; }
+.rq-lp .rq-reason__num {
+  position: absolute; left: 0; top: 0; margin: 0;
+  padding: 3px 10px 6px;
+  background: var(--rq-text);
+  color: #fff;
+  font-family: var(--rq-deco);
+  font-size: 20px;
+  line-height: 32px;
+  letter-spacing: .05em;
+}
+.rq-reason__text { flex: 1 1 624px; max-width: 624px; }
+.rq-lp .rq-reason__text h3 { font-size: 25px; line-height: 1.5; letter-spacing: .05em; font-weight: 400; margin-bottom: 20px; }
+.rq-reason__text h3 span { background: linear-gradient(transparent 58%, var(--rq-pale) 58%); }
+.rq-reason__text p { font-size: 16px; line-height: 1.6; margin-bottom: 1.2em; }
+.rq-reason__media { flex: 0 0 312px; width: 312px; aspect-ratio: 312 / 210; overflow: hidden; margin-left: auto; }
+.rq-reason__media img { object-position: 50% 45%; }
+
+/* ---------- 6 1日の流れ ---------- */
+.rq-lp .rq-photo { max-width: 900px; margin: 0 auto 48px; aspect-ratio: 900 / 525; overflow: hidden; }
+.rq-lp .rq-table { max-width: 1024px; margin: 0 auto; }
+.rq-table table { width: 100%; border-collapse: collapse; border: 1px solid var(--rq-line); font-family: var(--rq-sans); }
+.rq-table td { border: 1px solid var(--rq-line); padding: 8px 12px; font-size: 16px; line-height: 1.43; letter-spacing: .05em; vertical-align: middle; text-align: left; color: var(--rq-text); }
+.rq-table td:first-child { width: 20%; background: #fff; }
+.rq-table--daily td:first-child { width: 14%; white-space: nowrap; }
+.rq-table td p { margin: 0 0 .6em; }
+.rq-table td p:last-child { margin-bottom: 0; }
+.rq-table td strong { background: none; }
+.rq-plain-list { margin: 0 0 8px; }
+.rq-plain-list li { font-size: 14px; line-height: 2; }
+.rq-tag { display: inline-block; background: var(--rq-pale); color: var(--rq-text); font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; margin-left: 6px; }
+
+/* ---------- 7 応募から業務までの流れ ---------- */
+.rq-steps { display: flex; align-items: flex-start; justify-content: center; gap: 12px; max-width: 1024px; margin: 0 auto 48px; }
+.rq-steps li { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; }
+.rq-step-label { font-family: var(--rq-serif); font-size: 24px; line-height: 1.3; letter-spacing: .05em; color: var(--rq-text); margin-bottom: 14px; white-space: nowrap; }
+.rq-step-ico { width: 120px; height: 120px; display: block; }
+.rq-step-ico svg { width: 100%; height: 100%; }
+.rq-step-sep { align-self: flex-end; padding-bottom: 40px; }
+.rq-step-arrow { width: 24px; height: 40px; }
+.rq-flow-body { display: flex; align-items: center; gap: 40px; max-width: 1024px; margin: 0 auto; }
+.rq-flow-photo { flex: 0 0 40%; aspect-ratio: 3 / 2; overflow: hidden; }
+.rq-flow-body .rq-lead p { font-size: 16px; }
+
+/* ---------- 11 FAQ（lohas: Q. 25px Cormorant / 質問 21px serif 500 / 回答 16px） ---------- */
+.rq-faq { max-width: 1024px; margin: 0 auto; }
+.rq-faq-item { padding: 20px 0 24px; border-bottom: 1px solid var(--rq-line); }
+.rq-faq-item:first-child { border-top: 1px solid var(--rq-line); }
+.rq-faq-q, .rq-faq-a { display: flex; align-items: flex-start; gap: 16px; }
+.rq-faq-q { padding-bottom: 12px; }
+.rq-faq-mark { flex: 0 0 37px; font-family: var(--rq-deco); font-size: 25px; line-height: 1.3; letter-spacing: .05em; }
+.rq-faq-question { margin: 0; font-family: var(--rq-serif); font-size: 21px; line-height: 1.6; letter-spacing: .05em; font-weight: 500; }
+.rq-faq-answer p { font-size: 16px; line-height: 1.6; margin: 0 0 .4em; }
+
+/* ---------- 13 ピッタリ／合わない（lohas: 角丸32 border1 / タイトル帯16px 700 pad16 / 本文18px center） ---------- */
+.rq-suitable-lead { max-width: 1024px; margin: 0 auto; font-size: 16px; }
+.rq-suitable-box { max-width: 1024px; margin: 40px auto; border: 1px solid var(--rq-main); border-radius: 32px; overflow: hidden; text-align: center; background: #fff; }
+.rq-lp .rq-suitable-title { margin: 0; padding: 16px 10px; background: var(--rq-main); color: #fff; font-size: 16px; font-weight: 700; line-height: 1.6; letter-spacing: .05em; }
+.rq-suitable-body { padding: 0 10px 26px; }
+.rq-suitable-body p { margin: 0; padding: 18px 10px 0; font-size: 18px; line-height: 1.6; letter-spacing: .05em; }
+.rq-suitable-box--not { border-color: var(--rq-text); }
+.rq-suitable-box--not .rq-suitable-title { background: var(--rq-text); }
+
+/* ---------- 14 最後に ---------- */
+.rq-lp .rq-owner { position: relative; width: 100%; max-width: 440px; margin: 0 auto 64px; padding: 0 40px 40px 0; }
+.rq-owner::after { content: ""; position: absolute; right: 0; bottom: 0; width: 60%; height: 55%; background: var(--rq-main); z-index: 0; }
+.rq-owner img { position: relative; z-index: 1; width: 100%; box-shadow: 0 10px 30px rgba(85, 117, 138, .15); }
+.rq-message p { font-size: 16px; line-height: 1.6; letter-spacing: .05em; margin: 0 0 .45em; }
+.rq-sign { text-align: right; margin-top: 32px; font-family: var(--rq-serif); font-size: 18px; letter-spacing: .08em; }
+
+/* ---------- 固定CTA（SPのみ） ---------- */
+.rq-sticky-cta { display: none; }
+
+/* ============================================================
+   SP（lohas-nail.com/recruit 375px 実測値 2026-09-18）
+   見出し h2 25px / .sub 15px / .main 22.5px 500 / 下線 19x2 / mb 38
+   h3 18.75px / 本文 15px lh24 ls.75 / 余白 38px 12px / 特徴写真 282x193 / 理由写真 215x145
+   ============================================================ */
+@media screen and (max-width: 781px) {
+  .rq-lp { font-size: 15px; line-height: 1.6; letter-spacing: .05em; }
+  .rq-inner, #rq-worries .rq-inner { padding: 38px 12px; }
+  .rq-section--offer .rq-inner { padding-top: 30px; padding-bottom: 30px; }
+
+  /* 見出し（lohas SP: h2 25/30, sub 15 Cormorant pb4, main 22.5/27 500 pb11, mb37.5, bar 18.75x2） */
+  .rq-lp .rq-section-title { font-size: 25px; line-height: 1.2; letter-spacing: .05em; margin: 0 0 38px; padding-bottom: 12px; }
+  .rq-lp .rq-section-title::after { width: 19px; height: 2px; margin-left: -9.5px; }
+  .rq-lp .rq-section-title .rq-sub { font-size: 15px; line-height: 1.2; padding-bottom: 4px; }
+  .rq-lp .rq-section-title .rq-main { font-size: 22.5px; line-height: 1.3; font-weight: 500; padding-bottom: 11px; }
+  .rq-lp .rq-section-title .rq-main + .rq-sub { font-family: var(--rq-serif); font-size: 15px; line-height: 1.4; padding-top: 18px; padding-bottom: 4px; }
+
+  /* ヒーロー（lohas SP: 帯 pad 48.75/52.5, h1 33px） */
+  .rq-title-band { padding: 48px 16px 52px; }
+  .rq-lp .rq-under-title { font-size: 30px; line-height: 1.3; }
+  .rq-lp .rq-under-title .rq-sub { font-size: 17px; line-height: 1.3; padding-bottom: 4px; }
+  .rq-hero__inner { padding-top: 38px; }
+  .rq-lp .rq-hero__catch { margin-bottom: 30px; }
+  .rq-lp .rq-hero__catch .rq-main { font-size: 20px; line-height: 1.55; letter-spacing: .02em; }
+  .rq-lp .rq-hero__figure { margin-bottom: 28px; }
+  .rq-lead p, .rq-lp .rq-offer-text, .rq-lp .rq-offer-text:first-child { font-size: 15px; line-height: 1.6; letter-spacing: .05em; }
+  .rq-lp .rq-offer-text:first-child { text-align: left; }
+  .rq-cta-wrap { margin-top: 30px; }
+  .rq-cta { min-width: 0; width: 100%; max-width: 320px; padding: 18px 16px; font-size: 15px; letter-spacing: .02em; }
+  .rq-lp .rq-cta-note { font-size: 12px; margin-top: 12px; }
+
+  /* 悩み（lohas SP: 白箱 pad 39 21 28 / h4 18.75/24.4 500 / li 15/24 mb15 pl22.5 / チェック15px） */
+  .rq-box { padding: 38px 20px 28px; }
+  .rq-lp .rq-box-title { font-size: 18px; line-height: 1.35; letter-spacing: .02em; margin: 0 0 17px; }
+  .rq-box-title span { padding: 0 16px; }
+  .rq-box-title span::before, .rq-box-title span::after { height: 26px; margin-top: -13px; }
+  .rq-box-title span::before { left: 0; }
+  .rq-box-title span::after { right: 0; }
+  .rq-check-list li { font-size: 15px; line-height: 1.6; letter-spacing: .05em; padding-left: 23px; margin-bottom: 15px; }
+  .rq-ico-check { width: 16px; height: 16px; top: .3em; }
+
+  /* 特徴（lohas SP: h3 18.75/28.8 500 中央 pb11 mb19 / 写真 282x193 中央 色ブロック付き / 番号 75x54 右上 / 本文 15px） */
+  .rq-feature, .rq-feature--img-left { flex-direction: column; align-items: stretch; gap: 0; margin-bottom: 56px; }
+  .rq-feature__text, .rq-feature__media { flex: 0 0 auto; width: 100%; max-width: 100%; }
+  .rq-feature__media { order: -1; width: 296px; max-width: 100%; margin: 34px auto 26px; padding: 14px 0 0 14px; }
+  .rq-feature--img-left .rq-feature__media { padding: 14px 14px 0 0; }
+  .rq-feature__media figure { aspect-ratio: 282 / 193; }
+  .rq-feature__num { font-size: 54px; top: -36px; right: -4px; }
+  .rq-feature--img-left .rq-feature__num { left: auto; right: -4px; }
+  .rq-lp .rq-feature__text h3 { text-align: center; font-size: 18.75px; line-height: 1.54; letter-spacing: .05em; font-weight: 500; padding-bottom: 11px; margin: 0 0 19px; }
+  .rq-feature__text p { font-size: 15px; line-height: 1.6; margin-bottom: 1.2em; }
+
+  /* お客様の声 */
+  .rq-voices { margin: 28px auto; gap: 16px; }
+  .rq-voice { padding: 16px 16px 16px 20px; }
+  .rq-voice p { font-size: 15px; line-height: 1.7; }
+
+  /* 理由（lohas SP: 白カード pad 48.75 22.5 30 mb15 / ラベル 15/24 pad 2 7.5 4.5 / h3 18.75/26.25 中央 mb19 / 写真 215x145 中央 / 本文 15px） */
+  .rq-reasons::before { display: none; }
+  .rq-reason { flex-direction: column; align-items: stretch; gap: 0; padding: 49px 22px 30px; margin-bottom: 15px; }
+  .rq-lp .rq-reason__num { font-size: 15px; line-height: 24px; padding: 2px 8px 4px; }
+  .rq-reason__text { flex: 0 0 auto; max-width: 100%; }
+  .rq-lp .rq-reason__text h3 { text-align: center; font-size: 18.75px; line-height: 1.4; letter-spacing: .05em; margin: 0 0 19px; }
+  .rq-reason__text p { font-size: 15px; line-height: 1.6; }
+  .rq-reason__media { order: -1; flex: 0 0 auto; width: 215px; max-width: 100%; aspect-ratio: 215 / 145; margin: 0 auto 19px; }
+
+  /* 1日の流れ・表（lohas SP: 写真 353x206 / td 15px lh1.43 pad7.5 / 1列目 73px（時刻）・60px（項目）） */
+  .rq-lp .rq-photo { margin-bottom: 28px; }
+  .rq-table table { table-layout: fixed; }
+  .rq-table td { font-size: 15px; line-height: 1.43; letter-spacing: .04em; padding: 7px 8px; word-break: break-word; overflow-wrap: anywhere; }
+  .rq-table td:first-child { width: 96px; font-size: 14px; letter-spacing: 0; padding-left: 6px; padding-right: 6px; }
+  .rq-table--daily td:first-child { width: 80px; white-space: normal; font-size: 13px; letter-spacing: 0; padding-left: 6px; padding-right: 4px; }
+  .rq-plain-list li { font-size: 13px; line-height: 1.8; }
+  .rq-tag { font-size: 11px; padding: 1px 8px; margin-left: 4px; }
+
+  /* 応募から業務までの流れ（lohas SP: 図 353x85 横一列 4アイコン各約55px / ラベル約12px） */
+  .rq-steps { flex-wrap: nowrap; gap: 0; margin: 0 auto 30px; }
+  .rq-steps li:not(.rq-step-sep) { flex: 0 0 22%; }
+  .rq-step-label { font-size: 12px; letter-spacing: 0; margin-bottom: 6px; }
+  .rq-step-ico { width: 56px; height: 56px; }
+  .rq-step-sep { flex: 0 0 4%; align-items: center; padding-bottom: 16px; }
+  .rq-step-arrow { width: 10px; height: 20px; }
+  .rq-flow-body { flex-direction: column; gap: 24px; }
+  .rq-flow-photo { flex: 0 0 auto; width: 100%; }
+  .rq-flow-body .rq-lead p { font-size: 15px; }
+
+  /* FAQ（lohas SP: Q./A. 16.875px / 質問 16.875/27 500 / 回答 15/24） */
+  .rq-faq-item { padding: 16px 0 20px; }
+  .rq-faq-q, .rq-faq-a { gap: 8px; }
+  .rq-faq-mark { flex: 0 0 24px; font-size: 17px; line-height: 1.5; }
+  .rq-faq-question { font-size: 17px; line-height: 1.6; }
+  .rq-faq-answer p { font-size: 15px; line-height: 1.6; }
+
+  /* 向いている方 */
+  .rq-suitable-lead { font-size: 15px; }
+  .rq-suitable-box { margin: 28px auto; border-radius: 24px; }
+  .rq-lp .rq-suitable-title { font-size: 15px; padding: 14px 10px; }
+  .rq-suitable-body { padding: 0 8px 22px; }
+  .rq-suitable-body p { font-size: 15px; line-height: 1.6; text-align: left; padding: 16px 8px 0; }
+
+  /* 最後に（lohas SP: オーナー写真 353x405 幅いっぱい / 本文 15px） */
+  .rq-lp .rq-owner { max-width: 320px; margin-bottom: 40px; padding: 0 22px 22px 0; }
+  .rq-message p { font-size: 15px; line-height: 1.6; }
+  .rq-sign { font-size: 16px; margin-top: 24px; }
+  .rq-lp .rq-cta-heading { font-size: 15px; }
+  .rq-cta-lead { font-size: 15px; }
+
+  /* 固定CTA（ロハスには無いが、応募導線のため維持） */
+  .rq-sticky-cta { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(255, 255, 255, .92); box-shadow: 0 -4px 16px rgba(85, 117, 138, .12); text-align: center; }
+  .rq-sticky-cta .rq-cta { padding: 14px 20px; font-size: 15px; box-shadow: none; }
+  .rq-lp { padding-bottom: 72px; }
+}
