@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>コースカード | R.QueenNail</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&family=Cormorant+Garamond:wght@500&display=swap">
+<style>
+  :root{ --blue:#85C8FE; --ink:#3f5b6e; --sub:#6b8ba0; --pale:#a9c7dd; --line:#e3eff8; }
+  *{box-sizing:border-box;}
+  body{margin:0; background:#eef6fc; color:var(--ink); font-family:'Noto Serif JP',serif; padding:18px;}
+  .card{max-width:360px; margin:0 auto 16px; background:#fff; border-radius:22px; box-shadow:0 12px 34px rgba(133,200,254,.22); overflow:hidden;}
+  .top{height:5px; background:var(--blue);}
+  .pad{padding:26px 26px 28px;}
+  .logo{text-align:center; margin-bottom:4px;}
+  .logo img{max-width:190px; height:auto;}
+  .logo .fallback{font-family:'Cormorant Garamond',serif; font-size:26px; color:#55758A;}
+  .sub{text-align:center; font-size:10px; letter-spacing:5px; color:var(--pale); margin-top:4px;}
+  .rule{display:flex; align-items:center; gap:10px; margin:16px 0;}
+  .rule .l{flex:1; height:1px; background:var(--line);}
+  .rule .d{width:6px; height:6px; transform:rotate(45deg); border:1px solid #bcdcf0;}
+  .rule .t{font-size:10px; letter-spacing:3px; color:var(--pale);}
+  .course{text-align:center; font-size:17px; font-weight:500;}
+  .rsv{margin-top:16px; background:#f1f8ff; border:1px solid #e0f0fb; border-radius:14px; padding:14px 16px; text-align:center;}
+  .rsv.none{background:#f7fafc; border-color:#eaf0f5;}
+  .rsv .lbl{font-size:11px; letter-spacing:2px; color:#8fb5d6;}
+  .rsv .val{font-size:20px; font-weight:500; margin-top:6px;}
+  .rsv.none .val{color:#9fb3c4;}
+  .dots{display:flex; flex-wrap:wrap; justify-content:center; gap:11px; margin:22px 0 12px; max-width:230px; margin-left:auto; margin-right:auto;}
+  .dot{width:30px; height:30px; border-radius:50%; background:#fff; border:1.5px solid #d5e8f5;}
+  .dot.on{background:var(--blue); border:none; box-shadow:0 2px 5px rgba(133,200,254,.5);}
+  .count{text-align:center;}
+  .count b{font-size:26px; font-weight:500;}
+  .count span{font-size:13px; color:var(--sub);}
+  .rest{text-align:center; font-size:12px; color:var(--pale); margin-top:3px;}
+  .kit-row{display:flex; align-items:center; gap:10px; font-size:14px; margin-bottom:11px;}
+  .kit-row.done{color:var(--ink);} .kit-row.yet{color:#aebfcb;}
+  .kit-row .mk{font-size:18px;}
+  .memo{background:#f7fbff; border-radius:12px; padding:12px 14px; font-size:13px; line-height:1.7; margin-top:6px; white-space:pre-wrap;}
+  .state{max-width:360px; margin:40px auto; text-align:center; color:var(--sub); line-height:1.9;}
+</style>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+<div id="app"><div class="state">読み込み中…</div></div>
+
+<script>
+  var LIFF_ID = '2007134011-sLyerC6D';
+  var GAS_API = 'https://script.google.com/macros/s/AKfycbxl4_rKIOBOuTPoPZ_l48IYY7J1Qlo_SE3JH3AXJpd-DQt_v5EZG2H4anrw_HCPzxctQw/exec';
+  var LOGO_URL = 'https://raw.githubusercontent.com/RQN-shr/rqn-studio-931c/main/course-card-logo.png';
+
+  function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function showState(m){ document.getElementById('app').innerHTML = '<div class="state">'+m+'</div>'; }
+
+  function jsonp(params, cb){
+    var name = 'cb_' + Math.random().toString(36).slice(2);
+    var s = document.createElement('script');
+    var done = false;
+    window[name] = function(d){ done = true; try{ cb(d); } finally { delete window[name]; s.remove(); } };
+    var q = Object.keys(params).map(function(k){ return k+'='+encodeURIComponent(params[k]); }).join('&');
+    s.src = GAS_API + '?' + q + '&callback=' + name;
+    s.onerror = function(){ if(!done) showState('通信に失敗しました。<br>時間をおいて、もう一度お試しください。'); };
+    document.body.appendChild(s);
+  }
+
+  var linkToken = new URLSearchParams(location.search).get('link') || '';
+
+  liff.init({ liffId: LIFF_ID }).then(function(){
+    if(!liff.isLoggedIn()){ liff.login(); return null; }
+    return liff.getProfile();
+  }).then(function(profile){
+    if(!profile) return;
+    var userId = profile.userId;
+    if(linkToken){
+      jsonp({ action:'link', linkToken:linkToken, userId:userId }, function(){ loadCards(userId); });
+    } else {
+      loadCards(userId);
+    }
+  }).catch(function(e){ showState('うまく開けませんでした。<br>お手数ですが、もう一度開いてみてください。'); });
+
+  function loadCards(userId){ jsonp({ action:'getCards', userId:userId }, render); }
+
+  function render(cards){
+    if(cards === null){
+      showState('まだカードが登録されていません。<br>店舗までお声がけください。');
+      return;
+    }
+    if(!cards || !cards.length){
+      showState('現在、進行中のコースはありません。<br>ご来店をお待ちしております。');
+      return;
+    }
+    document.getElementById('app').innerHTML = cards.map(cardHtml).join('');
+  }
+
+  function cardHtml(c){
+    var dots = '';
+    for(var i=1;i<=c.max;i++){ dots += '<div class="dot'+(i<=c.current?' on':'')+'"></div>'; }
+    var kit = '';
+    if(c.productMax > 0){
+      kit += '<div class="rule"><div class="l"></div><div class="t">ホームケアセット</div><div class="l"></div></div>';
+      for(var j=1;j<=c.productMax;j++){
+        if(j<=c.productGiven){ kit += '<div class="kit-row done"><span class="mk">✓</span>'+j+'回目　お渡し済み</div>'; }
+        else { kit += '<div class="kit-row yet"><span class="mk">◯</span>'+j+'回目　お渡し</div>'; }
+      }
+    }
+    var rsv = c.nextReserve
+      ? '<div class="rsv"><div class="lbl">次回予約</div><div class="val">'+esc(c.nextReserve)+'</div></div>'
+      : '<div class="rsv none"><div class="lbl">次回予約</div><div class="val">未定</div></div>';
+    var memo = c.memo ? '<div class="memo">'+esc(c.memo)+'</div>' : '';
+    return '<div class="card"><div class="top"></div><div class="pad">'
+      + '<div class="logo"><img src="'+LOGO_URL+'" alt="R.QueenNail" onerror="this.outerHTML=\'<span class=\\\'fallback\\\'>R.QueenNail</span>\'"></div>'
+      + '<div class="sub">COURSE CARD</div>'
+      + '<div class="rule"><div class="l"></div><div class="d"></div><div class="l"></div></div>'
+      + '<div class="course">'+esc(c.name)+'</div>'
+      + rsv
+      + '<div class="dots">'+dots+'</div>'
+      + '<div class="count"><b>'+c.current+'</b><span> / '+c.max+'回 来店済み</span></div>'
+      + '<div class="rest">残り '+c.remaining+' 回</div>'
+      + kit + memo
+      + '</div></div>';
+  }
+</script>
+</body>
+</html>
