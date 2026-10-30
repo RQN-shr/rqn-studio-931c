@@ -1,0 +1,176 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>R.QueenNail ご来店アンケート</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    // 設定値：GASのウェブアプリURLを貼り付けてください。
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbycXAPMNt6vGPNhNehNapq5HnHsNwMh14UjCSPFvkvSKu5ZkUEXNy1TRAvpP7NNknHCZA/exec';
+    const GOOGLE_REVIEW_URL = 'https://maps.app.goo.gl/wrKon1z1Avaqbdzh9'; // 後でクチコミ投稿用リンクに差し替え
+  </script>
+  <style>
+    :root { --blue:#85c8fe; --deep:#55758a; --pale:#dcefff; --ink:#365262; --muted:#6d8795; --line:#c9e1f2; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; color:var(--ink); background:linear-gradient(150deg,#f8fcff 0%,var(--pale) 100%); font-family:"Noto Sans JP",sans-serif; }
+    .page { width:min(100%,620px); min-height:100vh; margin:auto; padding:28px 20px 42px; display:flex; flex-direction:column; }
+    header { text-align:center; margin:10px 0 28px; }
+    .brand { display:inline-block; color:var(--deep); font-size:13px; font-weight:700; letter-spacing:.12em; padding-bottom:8px; border-bottom:2px solid var(--blue); }
+    main { flex:1; display:grid; place-items:center; }
+    .card { width:100%; padding:34px 27px; background:rgba(255,255,255,.92); border:1px solid rgba(133,200,254,.55); border-radius:24px; box-shadow:0 12px 32px rgba(85,117,138,.12); }
+    .step { display:none; text-align:center; animation:show .3s ease; }
+    .step.active { display:block; }
+    @keyframes show { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+    h1 { margin:0 0 11px; color:var(--deep); font-size:25px; line-height:1.55; }
+    .lead { margin:0 auto 27px; color:var(--muted); font-size:14px; line-height:1.9; }
+    fieldset { border:0; padding:0; margin:0 0 24px; text-align:left; }
+    legend { margin-bottom:16px; font-size:16px; }
+    .rating-option { display:flex; align-items:center; gap:12px; min-height:52px; margin:8px 0; padding:12px; border:1px solid var(--line); border-radius:12px; cursor:pointer; }
+    .rating-option:has(input:checked) { background:var(--pale); border-color:var(--deep); }
+    .rating-option input { width:20px; height:20px; margin:0; accent-color:var(--deep); }
+    .button { width:100%; min-height:52px; border:0; border-radius:13px; background:var(--blue); color:#25485e; font:600 15px "Noto Sans JP",sans-serif; cursor:pointer; box-shadow:0 5px 12px rgba(85,117,138,.18); transition:filter .15s,transform .15s; }
+    .button:hover { filter:brightness(.96); transform:translateY(-1px); }
+    .button:focus-visible { outline:3px solid #55758a; outline-offset:3px; }
+    .button:disabled { cursor:default; opacity:.68; }
+    .subbutton { margin-top:11px; background:transparent; box-shadow:none; color:var(--deep); border:1px solid var(--line); }
+    .form-label { display:block; margin:19px 0 8px; text-align:left; color:var(--deep); font-size:14px; font-weight:600; }
+    textarea,input { width:100%; border:1px solid var(--line); border-radius:12px; padding:12px 13px; color:var(--ink); background:#fff; font:14px "Noto Sans JP",sans-serif; }
+    textarea { min-height:124px; resize:vertical; }
+    textarea:focus,input:focus { outline:3px solid rgba(133,200,254,.35); border-color:var(--blue); }
+    .message { min-height:22px; margin:12px 0 0; color:var(--deep); font-size:13px; }
+    .honeypot { position:absolute !important; left:-10000px !important; opacity:0 !important; pointer-events:none !important; }
+    footer { padding-top:25px; color:#78909d; font-size:11px; text-align:center; }
+    @media (max-width:400px) { .page { padding:19px 14px 30px; } .card { padding:29px 19px; border-radius:20px; } h1 { font-size:21px; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header><span class="brand">R.QueenNail</span></header>
+    <main>
+      <section class="card" aria-live="polite">
+        <input id="website" class="honeypot" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div id="step-rating" class="step active">
+          <h1>ご来店アンケート</h1>
+          <p class="lead">（所要時間1分）</p>
+          <fieldset>
+            <legend>Q.本日の感想を教えてください♡</legend>
+            <label class="rating-option"><input type="radio" name="rating" value="5">満足した</label>
+            <label class="rating-option"><input type="radio" name="rating" value="4">良かった</label>
+            <label class="rating-option"><input type="radio" name="rating" value="3">普通</label>
+            <label class="rating-option"><input type="radio" name="rating" value="2">良くなかった</label>
+            <label class="rating-option"><input type="radio" name="rating" value="1">不満</label>
+          </fieldset>
+          <button id="next-button" class="button" disabled>次へ</button>
+        </div>
+        <div id="step-happy" class="step">
+          <h1>ありがとうございます！</h1>
+          <p class="lead">よろしければGoogleマップに口コミを書いていただけるとうれしいです</p>
+          <label class="form-label" for="happy-comment">ご感想（任意）</label>
+          <textarea id="happy-comment" maxlength="2000"></textarea>
+          <button id="review-button" class="button">コピーしてGoogleの口コミ画面へ</button>
+          <button id="back-happy" class="button subbutton">評価を選び直す</button>
+          <p id="happy-message" class="message" role="status"></p>
+        </div>
+        <div id="step-feedback" class="step">
+          <p class="lead">ご来店ありがとうございました。今後のサービス向上のため、お気づきの点をお聞かせください</p>
+          <form id="feedback-form">
+            <label class="form-label" for="comment">ご意見（任意）</label>
+            <textarea id="comment" maxlength="2000"></textarea>
+            <label class="form-label" for="name">お名前（任意）</label>
+            <input id="name" type="text" maxlength="50" autocomplete="name">
+            <button id="send-button" class="button" type="submit">送信する</button>
+          </form>
+          <button id="back-feedback" class="button subbutton" type="button">評価を選び直す</button>
+          <p id="feedback-message" class="message" role="status"></p>
+        </div>
+        <div id="step-thanks" class="step">
+          <h1>貴重なご意見をありがとうございました。</h1>
+        </div>
+      </section>
+    </main>
+    <footer>© R.QueenNail</footer>
+  </div>
+  <script>
+    const labels = {1:'不満', 2:'良くなかった', 3:'普通', 4:'良かった', 5:'満足した'};
+    let rating = 0;
+    let submitting = false;
+    const $ = (id) => document.getElementById(id);
+    function show(id) {
+      document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+      $(id).classList.add('active');
+    }
+    document.querySelectorAll('input[name="rating"]').forEach(input => {
+      input.addEventListener('change', () => {
+        rating = Number(input.value);
+        $('next-button').disabled = false;
+      });
+    });
+    $('next-button').onclick = () => {
+      if (rating && !submitting) show(rating >= 4 ? 'step-happy' : 'step-feedback');
+    };
+    $('back-happy').onclick = $('back-feedback').onclick = () => {
+      if (!submitting) show('step-rating');
+    };
+    function beginSubmission() {
+      if (submitting) return false;
+      submitting = true;
+      ['review-button','send-button','back-happy','back-feedback','next-button'].forEach(id => $(id).disabled = true);
+      return true;
+    }
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        try { await navigator.clipboard.writeText(text); return; } catch (_) { /* フォールバック */ }
+      }
+      const area = document.createElement('textarea');
+      area.value = text;
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.append(area);
+      area.focus();
+      area.select();
+      try {
+        if (!document.execCommand('copy')) throw new Error('Copy failed');
+      } finally { area.remove(); }
+    }
+    async function send(comment, name) {
+      if (!GAS_URL || GAS_URL.includes('ここに')) return;
+      const data = {rating, label:labels[rating], comment, name,
+        website:$('website').value, userAgent:navigator.userAgent, submittedAt:new Date().toISOString()};
+      // no-corsでは受信結果を確認できません。通信失敗時も画面を進めます。
+      try {
+        await Promise.race([
+          fetch(GAS_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(data)}),
+          new Promise(resolve => setTimeout(resolve, 5000))
+        ]);
+      } catch (_) { /* 画面遷移を継続 */ }
+    }
+    $('review-button').onclick = async () => {
+      if (!beginSubmission()) return;
+      const comment = $('happy-comment').value.trim();
+      let message = 'Googleの口コミ画面へ移動します。';
+      if (comment) {
+        try {
+          await copyText(comment);
+          message = 'コピーしました。次の画面で貼り付けてください';
+        } catch (_) {
+          message = 'コピーできませんでした。次の画面でご感想を入力してください。';
+        }
+      }
+      await send(comment, '');
+      $('happy-message').textContent = message;
+      setTimeout(() => { window.location.href = GOOGLE_REVIEW_URL; }, 2000);
+    };
+    $('feedback-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!beginSubmission()) return;
+      $('feedback-message').textContent = '送信しています…';
+      await send($('comment').value.trim(), $('name').value.trim());
+      show('step-thanks');
+    });
+  </script>
+</body>
+</html>
